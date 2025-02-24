@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Geolocation Tool</title>
+    <style>
+        /* Background dan style utama */
+        body {
+            background-color: #111;
+            color: #33FF00; /* Hijau neon */
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Kontainer utama */
+        .container {
+            background: #222;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #00FF00;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #33FF00;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #33FF00;
+            border-radius: 5px;
+            background-color: #111;
+            color: #33FF00;
+            font-size: 18px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #33FF00;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #28B500;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #33FF00;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result p {
+            margin: 5px 0;
+        }
+
+        /* Efek teks untuk hasil */
+        .result h3 {
+            color: #33FF00;
+            font-size: 24px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IP Geolocation</h1>
+        <input type="text" id="ipAddress" placeholder="Masukkan IP (kosongkan untuk IP publik)" />
+        <button onclick="getGeolocation()">Cari Lokasi</button>
+        
+        <div class="result" id="result">
+            <h3>Informasi Lokasi:</h3>
+            <p><strong>IP Address:</strong> <span id="ip"></span></p>
+            <p><strong>Kota:</strong> <span id="city"></span></p>
+            <p><strong>Negara:</strong> <span id="country"></span></p>
+            <p><strong>Organisasi:</strong> <span id="org"></span></p>
+            <p><strong>Lokasi:</strong> <span id="location"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function getGeolocation() {
+            const ipAddress = document.getElementById('ipAddress').value || 'ipinfo.io';  // Menggunakan IP publik jika kosong
+            const url = `https://ipinfo.io/${ipAddress}/json`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ip').innerText = data.ip || 'Tidak ditemukan';
+                    document.getElementById('city').innerText = data.city || 'Tidak ditemukan';
+                    document.getElementById('country').innerText = data.country || 'Tidak ditemukan';
+                    document.getElementById('org').innerText = data.org || 'Tidak ditemukan';
+                    document.getElementById('location').innerText = data.loc || 'Tidak ditemukan';
+                    document.getElementById('result').style.display = 'block';
+                })
+                .catch(error => {
+                    alert("Terjadi kesalahan dalam mengambil data.");
+                    console.error(error);
+                });
+        }
+    </script>
+    <script src="app.py"></script>
+</body>
+</html>
